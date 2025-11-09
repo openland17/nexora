@@ -60,12 +60,22 @@ PLATFORM_FEE_BPS=1500
 #### How to Get Each Value:
 
 1. **DATABASE_URL**: 
-   - Sign up at https://planetscale.com (free tier available) OR
-   - Use https://railway.app, https://render.com, or any MySQL provider
-   - Create a new MySQL database
-   - Copy the connection string
-   - Format: `mysql://user:password@host:3306/database`
-   - For PlanetScale: Use the connection string from your dashboard
+   - **Option A: Railway (FREE with $5 monthly credit)**
+     - Sign up at https://railway.app
+     - New Project → Add MySQL database
+     - Free tier includes $5/month credit (enough for small projects)
+     - Copy connection string → Format: `mysql://user:password@host:3306/database`
+   
+   - **Option B: Render (FREE tier available)**
+     - Sign up at https://render.com
+     - New → PostgreSQL/MySQL → Choose MySQL
+     - Free tier available (with some limitations)
+     - Copy connection string
+   
+   - **Option C: Free MySQL.com Cloud (if available)**
+     - Check https://www.mysql.com/cloud/ for free tier options
+   
+   - **Format:** `mysql://user:password@host:3306/database`
 
 2. **Clerk Keys**:
    - Go to https://dashboard.clerk.com
@@ -104,11 +114,10 @@ PLATFORM_FEE_BPS=1500
 
 **IMPORTANT:** Your `prisma/schema.prisma` is configured for MySQL. Make sure your production database is MySQL.
 
-**Recommended Providers:**
-- **PlanetScale** (https://planetscale.com) - Free tier, serverless MySQL
-- **Railway** (https://railway.app) - Easy MySQL setup
-- **Render** (https://render.com) - Managed MySQL
-- **AWS RDS** - For larger scale
+**Recommended FREE Providers:**
+- **Railway** (https://railway.app) - $5/month free credit, easy MySQL setup
+- **Render** (https://render.com) - Free tier available for MySQL
+- **Note:** For production, you may need to upgrade later, but these free tiers work for getting started
 
 **Note:** You can keep SQLite for local development by using a different `.env` file locally, but the schema in the repo should be MySQL for Vercel.
 
