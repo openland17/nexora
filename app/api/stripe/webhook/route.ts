@@ -6,6 +6,13 @@ import { calculateFees } from "@/lib/stripe"
 import Stripe from "stripe"
 
 export async function POST(req: NextRequest) {
+  if (!stripe) {
+    return NextResponse.json(
+      { error: "STRIPE_SECRET_KEY is required" },
+      { status: 500 }
+    )
+  }
+
   const body = await req.text()
   const headersList = await headers()
   const signature = headersList.get("stripe-signature")
@@ -84,6 +91,4 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ received: true })
 }
-
-export const runtime = "edge"
 

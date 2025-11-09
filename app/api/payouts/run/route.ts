@@ -4,6 +4,13 @@ import { stripe } from "@/lib/stripe"
 
 export async function POST(req: NextRequest) {
   try {
+    if (!stripe) {
+      return NextResponse.json(
+        { error: "STRIPE_SECRET_KEY is required" },
+        { status: 500 }
+      )
+    }
+
     const authHeader = req.headers.get("authorization")
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

@@ -5,6 +5,13 @@ import { stripe, calculateFees } from "@/lib/stripe"
 
 export async function POST(req: NextRequest) {
   try {
+    if (!stripe) {
+      return NextResponse.json(
+        { error: "STRIPE_SECRET_KEY is required" },
+        { status: 500 }
+      )
+    }
+
     const user = await requireAuth()
     const { courseId } = await req.json()
 

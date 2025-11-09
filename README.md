@@ -21,6 +21,10 @@ A production-ready marketplace for AI courses built with Next.js 14, TypeScript,
 - **Email**: Resend
 - **UI**: Tailwind CSS + shadcn/ui
 
+## Quick Start
+
+For a quick setup guide, see **[QUICK_START.md](./QUICK_START.md)**
+
 ## Setup
 
 1. **Install dependencies**:
@@ -29,14 +33,18 @@ A production-ready marketplace for AI courses built with Next.js 14, TypeScript,
    ```
 
 2. **Set up environment variables**:
-   Copy `.env.example` to `.env` and fill in all values:
-   - Database URL (SQLite - defaults to `file:./dev.db`)
-   - Clerk keys
-   - Stripe keys
-   - Mux credentials
-   - Resend API key
+   Copy `env.template` to `.env` and fill in all values:
+   - Database URL (SQLite for dev: `file:./prisma/dev.db`, MySQL for production)
+   - Clerk keys (from https://dashboard.clerk.com)
+   - Stripe keys (from https://dashboard.stripe.com)
+   - Mux credentials (from https://dashboard.mux.com)
+   - Resend API key (optional, from https://resend.com)
 
 3. **Set up database**:
+   ```bash
+   npm run db:setup
+   ```
+   Or manually:
    ```bash
    npx prisma db push
    npx prisma generate
@@ -46,6 +54,10 @@ A production-ready marketplace for AI courses built with Next.js 14, TypeScript,
    ```bash
    npm run dev
    ```
+
+5. **Create your first admin user**:
+   - Sign up at http://localhost:3000/sign-up
+   - Run: `npm run admin:create your-email@example.com`
 
 ## Environment Variables
 
@@ -87,6 +99,13 @@ PLATFORM_FEE_BPS=1500
 
 ## Deployment
 
+For detailed deployment instructions, see:
+- **[production-launch-plan.plan.md](./production-launch-plan.plan.md)** - Complete production launch plan
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Detailed deployment guide
+- **[NEXT_STEPS.md](./NEXT_STEPS.md)** - Quick Vercel deployment steps
+- **[scripts/deployment-checklist.md](./scripts/deployment-checklist.md)** - Pre-launch checklist
+
+Quick steps:
 1. Push to GitHub
 2. Connect to Vercel
 3. Add environment variables

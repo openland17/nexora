@@ -4,6 +4,13 @@ import { stripe } from "@/lib/stripe"
 
 export async function POST(req: NextRequest) {
   try {
+    if (!stripe) {
+      return NextResponse.json(
+        { error: "STRIPE_SECRET_KEY is required" },
+        { status: 500 }
+      )
+    }
+
     const user = await requireCreator()
 
     if (user.stripeAccountId) {
