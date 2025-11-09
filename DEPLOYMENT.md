@@ -190,29 +190,28 @@ Then point DNS to Vercel the same way.
 
 ## Database for Production
 
-SQLite won't work on Vercel. Use one of these:
+SQLite won't work on Vercel. Use one of these **FREE** MySQL options:
 
-### Option 1: Neon (Recommended - Free Tier)
-1. Go to https://neon.tech
-2. Create account and database
-3. Copy connection string
-4. Update `DATABASE_URL` in Vercel
-5. Run migrations:
+### Option 1: Railway MySQL (FREE - $5 Monthly Credit)
+1. Go to https://railway.app
+2. Sign up (free with $5/month credit)
+3. Create new project → Add MySQL database
+4. Copy connection string from database settings
+5. Update `DATABASE_URL` in Vercel
+6. Run migrations after first deployment:
    ```bash
-   npx prisma migrate deploy
+   npx prisma db push
    ```
 
-### Option 2: Railway MySQL
-1. Go to https://railway.app
-2. Create new project → Add MySQL database
-3. Copy connection string
-4. Update `DATABASE_URL` in Vercel
-
-### Option 3: Render MySQL
+### Option 2: Render MySQL (FREE Tier)
 1. Go to https://render.com
-2. Create new MySQL database
-3. Copy connection string
-4. Update `DATABASE_URL` in Vercel
+2. Sign up (free tier available)
+3. New → Database → MySQL
+4. Create free MySQL database
+5. Copy connection string
+6. Update `DATABASE_URL` in Vercel
+
+**Note:** Free tiers have limitations but are perfect for getting started. Upgrade later if needed.
 
 **Important:** Your `prisma/schema.prisma` is already configured for MySQL:
 ```prisma
@@ -238,7 +237,7 @@ npx prisma generate
 **You DO need:**
 - ✅ Vercel account (free)
 - ✅ GitHub account (free)
-- ✅ Production database (PlanetScale/Railway/Render MySQL)
+- ✅ Production database (Railway/Render MySQL - FREE tiers available)
 - ✅ Domain (optional - Vercel provides free subdomain)
 
 **Quick Start:**
