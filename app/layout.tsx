@@ -26,41 +26,42 @@ export default function RootLayout({
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
   const hasClerkKeys = publishableKey && !publishableKey.includes("...")
 
-  const content = (
+  const bodyContent = (
+    <>
+      <header>
+        {hasClerkKeys ? (
+          <>
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </>
+        ) : (
+          <div className="p-4 text-sm text-yellow-400">
+            ⚠ Clerk keys not configured. Add NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY to .env
+          </div>
+        )}
+      </header>
+      {children}
+      <Toaster />
+    </>
+  )
+
+  return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <header>
-          {hasClerkKeys ? (
-            <>
-              <SignedOut>
-                <SignInButton />
-                <SignUpButton />
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-            </>
-          ) : (
-            <div className="p-4 text-sm text-yellow-400">
-              ⚠ Clerk keys not configured. Add NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY to .env
-            </div>
-          )}
-        </header>
-        {children}
-        <Toaster />
+        {hasClerkKeys && publishableKey ? (
+          <ClerkProvider publishableKey={publishableKey}>
+            {bodyContent}
+          </ClerkProvider>
+        ) : (
+          bodyContent
+        )}
       </body>
     </html>
   )
-
-  // Always wrap with ClerkProvider if keys are available
-  if (hasClerkKeys && publishableKey) {
-    return (
-      <ClerkProvider publishableKey={publishableKey}>
-        {content}
-      </ClerkProvider>
-    )
-  }
-
-  return content
 }
 
