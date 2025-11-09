@@ -5,8 +5,11 @@ nixPkgs = ["nodejs_20", "npm-9_x", "openssl"]
 cmds = ["npm ci"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = ["prisma generate", "npm run build"]
 
 [start]
 cmd = "npm run start"
+
+[variables]
+SKIP_ENV_VALIDATION = "true"
 

@@ -50,6 +50,8 @@ async function getCourse(slug: string) {
   return course
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function CoursePage({
   params,
 }: {
