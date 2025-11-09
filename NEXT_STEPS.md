@@ -12,16 +12,18 @@ Follow these steps in order:
 
 Choose ONE option:
 
-### Option A: Render (FREE Tier Available)
+### Option A: Render (FREE Tier Available - Recommended)
 1. Go to https://render.com
-2. Sign up (free)
+2. Sign up (free tier available)
 3. Click "New" → "Database"
 4. Choose "MySQL"
 5. Name it (e.g., "nexora-db")
-6. Select "Free" plan
+6. Select "Free" plan (if available) or "Starter" plan
 7. Click "Create Database"
-8. Wait for it to provision
-9. Copy the "Internal Database URL" (looks like: `mysql://user:password@host:3306/database`)
+8. Wait for it to provision (takes a few minutes)
+9. Once ready, go to the database dashboard
+10. Copy the "Internal Database URL" (looks like: `mysql://user:password@host:3306/database`)
+11. **Important:** Use "Internal Database URL" for Vercel deployment
 
 **Save this DATABASE_URL - you'll need it in Step 3!**
 
