@@ -22,14 +22,14 @@ async function getCourse(courseId: string) {
 export default async function LearnPage({
   params,
 }: {
-  params: { courseId: string }
+  params: Promise<{ courseId: string }>
 }) {
   const user = await getCurrentUser()
   if (!user) {
     redirect("/sign-in")
   }
-
-  const course = await getCourse(params.courseId)
+  const { courseId } = await params
+  const course = await getCourse(courseId)
   if (!course) {
     redirect("/courses")
   }

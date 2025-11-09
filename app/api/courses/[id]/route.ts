@@ -3,11 +3,12 @@ import { prisma } from "@/lib/db"
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const course = await prisma.course.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         creator: {
           select: {
@@ -62,27 +63,24 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { requireCreator } = await import("@/lib/auth")
     const user = await requireCreator()
-
+    const { id } = await params
     const course = await prisma.course.findUnique({
-      where: { id: params.id },
+      where: { id },
     })
-
     if (!course) {
       return NextResponse.json({ error: "Course not found" }, { status: 404 })
     }
-
     if (course.creatorId !== user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
-
     const data = await req.json()
     const updated = await prisma.course.update({
-      where: { id: params.id },
+      where: { id },
       data,
     })
 

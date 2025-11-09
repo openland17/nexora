@@ -4,13 +4,13 @@ import { prisma } from "@/lib/db"
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireCreator()
-
+    const { id } = await params
     const course = await prisma.course.findUnique({
-      where: { id: params.id },
+      where: { id },
     })
 
     if (!course || course.creatorId !== user.id) {
@@ -25,7 +25,7 @@ export async function POST(
 
     const module = await prisma.module.create({
       data: {
-        courseId: params.id,
+        courseId: id,
         title,
         description: description || null,
         order: order || 0,

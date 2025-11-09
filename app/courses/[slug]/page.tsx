@@ -53,9 +53,10 @@ async function getCourse(slug: string) {
 export default async function CoursePage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const course = await getCourse(params.slug)
+  const { slug } = await params
+  const course = await getCourse(slug)
 
   if (!course || course.status !== "PUBLISHED") {
     notFound()

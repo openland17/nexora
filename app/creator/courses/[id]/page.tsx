@@ -31,10 +31,11 @@ async function getCourse(courseId: string, userId: string) {
 export default async function CourseEditPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
   const user = await requireCreator()
-  const course = await getCourse(params.id, user.id)
+  const { id } = await params
+  const course = await getCourse(id, user.id)
 
   if (!course) {
     redirect("/creator/dashboard")
