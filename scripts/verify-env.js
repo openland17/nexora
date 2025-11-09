@@ -8,12 +8,39 @@
  * and provide helpful error messages if any are missing.
  */
 
+// Load .env file if it exists
+const fs = require('fs')
+const path = require('path')
+
+const envPath = path.join(process.cwd(), '.env')
+if (fs.existsSync(envPath)) {
+  const envFile = fs.readFileSync(envPath, 'utf8')
+  envFile.split('\n').forEach(line => {
+    const trimmedLine = line.trim()
+    if (trimmedLine && !trimmedLine.startsWith('#')) {
+      const match = trimmedLine.match(/^([^=]+)=(.*)$/)
+      if (match) {
+        const key = match[1].trim()
+        let value = match[2].trim()
+        // Remove quotes if present
+        if ((value.startsWith('"') && value.endsWith('"')) || 
+            (value.startsWith("'") && value.endsWith("'"))) {
+          value = value.slice(1, -1)
+        }
+        if (!process.env[key]) {
+          process.env[key] = value
+        }
+      }
+    }
+  })
+}
+
 const requiredVars = {
   // Database
   DATABASE_URL: {
     required: true,
-    description: 'Database connection string (SQLite for dev, MySQL for production)',
-    example: 'file:./prisma/dev.db or mysql://user:password@host:3306/database'
+    description: 'Database connection string (SQLite for dev, PostgreSQL for production)',
+    example: 'file:./prisma/dev.db or postgresql://user:password@host:5432/database'
   },
   
   // Clerk
