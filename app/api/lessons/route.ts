@@ -3,6 +3,10 @@ import { requireCreator } from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { mux } from "@/lib/mux"
 
+if (!mux) {
+  throw new Error("MUX_TOKEN_ID and MUX_TOKEN_SECRET are required")
+}
+
 export async function POST(req: NextRequest) {
   try {
     const user = await requireCreator()
