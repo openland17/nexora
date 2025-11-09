@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id            String    @id @default(cuid())
+  clerkId       String    @unique
+  email         String
+  name          String?
+  image         String?
+  role          String    @default("LEARNER")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Creator fields
+  stripeAccountId     String?
+  creatorStatus       String?
+  creatorApplication  CreatorApplication?
+  courses             Course[]
+  payouts             Payout[]
+
+  // Learner fields
+  enrollments         Enrollment[]
+  orders              Order[]
+  reviews             Review[]
+
+  @@index([clerkId])
+  @@index([role])
+}
+
+model CreatorApplication {
+  id          String         @id @default(cuid())
+  userId      String         @unique
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio         String
+  socialLinks String?
+  reason      String
+  status      String  @default("PENDING")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  reviewedAt  DateTime?
+  reviewedBy  String?
+}
+
+model Course {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  title           String
+  description     String
+  thumbnailUrl    String?
+  priceCents      Int
+  creatorId       String
+  creator         User          @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  status          String  @default("DRAFT")
+  category        String?
+  tags            String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  publishedAt     DateTime?
+
+  modules         Module[]
+  enrollments     Enrollment[]
+  orders          Order[]
+  reviews         Review[]
+
+  @@index([slug])
+  @@index([creatorId])
+  @@index([status])
+  @@index([category])
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lessons     Lesson[]
+
+  @@index([courseId])
+}
+
+model Lesson {
+  id              String   @id @default(cuid())
+  moduleId        String
+  module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title           String
+  description     String?
+  order           Int
+  muxAssetId      String?
+  muxPlaybackId   String?
+  freePreview     Boolean  @default(false)
+  duration        Int?     // in seconds
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([moduleId])
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  orderId     String?
+  order       Order?   @relation(fields: [orderId], references: [id])
+  enrolledAt  DateTime @default(now())
+  progress    String?    // Track lesson completion (JSON string)
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  userId            String
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId          String
+  course            Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  stripeSessionId   String?     @unique
+  stripePaymentId   String?     @unique
+  amountCents       Int
+  platformFeeCents  Int
+  creatorPayoutCents Int
+  status            String @default("PENDING")
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  enrollments       Enrollment[]
+
+  @@index([userId])
+  @@index([courseId])
+  @@index([stripeSessionId])
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  rating      Int      // 1-5
+  comment     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model Payout {
+  id                String   @id @default(cuid())
+  creatorId         String
+  creator           User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  amountCents       Int
+  stripePayoutId    String?  @unique
+  status            String   @default("pending") // pending, processing, paid, failed
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  paidAt            DateTime?
+
+  @@index([creatorId])
+  @@index([status])
+}
+
