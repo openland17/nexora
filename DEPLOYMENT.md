@@ -193,17 +193,17 @@ SQLite won't work on Vercel. Use one of these:
    npx prisma migrate deploy
    ```
 
-### Option 2: Vercel Postgres
-1. In Vercel dashboard → Storage
-2. Create Postgres database
+### Option 2: Railway MySQL
+1. Go to https://railway.app
+2. Create new project → Add MySQL database
 3. Copy connection string
-4. Update `DATABASE_URL`
+4. Update `DATABASE_URL` in Vercel
 
-### Option 3: Supabase
-1. Go to https://supabase.com
-2. Create project
+### Option 3: Render MySQL
+1. Go to https://render.com
+2. Create new MySQL database
 3. Copy connection string
-4. Update `DATABASE_URL`
+4. Update `DATABASE_URL` in Vercel
 
 **Important:** Your `prisma/schema.prisma` is already configured for MySQL:
 ```prisma
