@@ -18,14 +18,14 @@ export const metadata: Metadata = {
   description: "Learn AI from expert creators",
 }
 
-const hasClerkKeys = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && 
-                     !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("...")
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+  const hasClerkKeys = publishableKey && !publishableKey.includes("...")
+
   const content = (
     <html lang="en" className="dark">
       <body className={inter.className}>
@@ -52,6 +52,15 @@ export default function RootLayout({
     </html>
   )
 
-  return hasClerkKeys ? <ClerkProvider>{content}</ClerkProvider> : content
+  // Always wrap with ClerkProvider if keys are available
+  if (hasClerkKeys && publishableKey) {
+    return (
+      <ClerkProvider publishableKey={publishableKey}>
+        {content}
+      </ClerkProvider>
+    )
+  }
+
+  return content
 }
 
