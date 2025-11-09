@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const upload = await mux.video.directUploads.create({
+    const upload = await mux.directUploads.create({
       new_asset_settings: { playback_policy: "public" },
     })
     const lesson = await prisma.lesson.create({
