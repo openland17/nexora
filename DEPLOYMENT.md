@@ -205,10 +205,10 @@ SQLite won't work on Vercel. Use one of these:
 3. Copy connection string
 4. Update `DATABASE_URL`
 
-**Important:** After switching to PostgreSQL, update `prisma/schema.prisma`:
+**Important:** Your `prisma/schema.prisma` is already configured for MySQL:
 ```prisma
 datasource db {
-  provider = "postgresql"  // Change from "sqlite"
+  provider = "mysql"  // Already configured
   url      = env("DATABASE_URL")
 }
 ```
@@ -229,7 +229,7 @@ npx prisma generate
 **You DO need:**
 - ✅ Vercel account (free)
 - ✅ GitHub account (free)
-- ✅ Production database (Neon/Supabase/Vercel Postgres)
+- ✅ Production database (PlanetScale/Railway/Render MySQL)
 - ✅ Domain (optional - Vercel provides free subdomain)
 
 **Quick Start:**
