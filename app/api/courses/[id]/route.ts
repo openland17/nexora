@@ -15,7 +15,6 @@ export async function GET(
             id: true,
             name: true,
             image: true,
-            bio: true,
           },
         },
         modules: {
