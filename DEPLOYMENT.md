@@ -30,8 +30,8 @@ Go to your Vercel project → Settings → Environment Variables and add ALL of 
 #### Required Environment Variables:
 
 ```
-# Database (REQUIRED - Use PostgreSQL for production, not SQLite!)
-DATABASE_URL=postgresql://user:password@host:5432/database?sslmode=require
+# Database (REQUIRED - Use MySQL for production, not SQLite!)
+DATABASE_URL=mysql://user:password@host:3306/database
 
 # Clerk Authentication (REQUIRED)
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_... or pk_live_...
@@ -60,10 +60,12 @@ PLATFORM_FEE_BPS=1500
 #### How to Get Each Value:
 
 1. **DATABASE_URL**: 
-   - Sign up at https://neon.tech (free tier available)
-   - Create a new project
+   - Sign up at https://planetscale.com (free tier available) OR
+   - Use https://railway.app, https://render.com, or any MySQL provider
+   - Create a new MySQL database
    - Copy the connection string
-   - Format: `postgresql://user:password@host/database?sslmode=require`
+   - Format: `mysql://user:password@host:3306/database`
+   - For PlanetScale: Use the connection string from your dashboard
 
 2. **Clerk Keys**:
    - Go to https://dashboard.clerk.com
@@ -94,32 +96,21 @@ PLATFORM_FEE_BPS=1500
    - Create API key → Copy to `RESEND_API_KEY`
 
 **Important Notes:**
-- Use **PostgreSQL** for production (SQLite won't work on Vercel)
+- Use **MySQL** for production (SQLite won't work on Vercel)
 - Set all variables for **Production**, **Preview**, and **Development** environments
 - After setting variables, **redeploy** your project
 
-### Step 3.5: Update Prisma Schema for PostgreSQL
+### Step 3.5: Database Setup
 
-**IMPORTANT:** Your `prisma/schema.prisma` is currently set to SQLite. For Vercel production, you need PostgreSQL.
+**IMPORTANT:** Your `prisma/schema.prisma` is configured for MySQL. Make sure your production database is MySQL.
 
-1. Open `prisma/schema.prisma`
-2. Change the first line from:
-   ```
-   datasource db {
-     provider = "sqlite"
-     url      = env("DATABASE_URL")
-   }
-   ```
-   To:
-   ```
-   datasource db {
-     provider = "postgresql"
-     url      = env("DATABASE_URL")
-   }
-   ```
-3. Commit and push this change
+**Recommended Providers:**
+- **PlanetScale** (https://planetscale.com) - Free tier, serverless MySQL
+- **Railway** (https://railway.app) - Easy MySQL setup
+- **Render** (https://render.com) - Managed MySQL
+- **AWS RDS** - For larger scale
 
-**Note:** You can keep SQLite for local development by using a different `.env` file locally, but the schema in the repo should be PostgreSQL for Vercel.
+**Note:** You can keep SQLite for local development by using a different `.env` file locally, but the schema in the repo should be MySQL for Vercel.
 
 ### Step 4: Configure Webhooks
 
