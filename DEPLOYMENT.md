@@ -60,20 +60,22 @@ PLATFORM_FEE_BPS=1500
 #### How to Get Each Value:
 
 1. **DATABASE_URL**: 
-   - **Option A: Railway (FREE with $5 monthly credit)**
-     - Sign up at https://railway.app
-     - New Project → Add MySQL database
-     - Free tier includes $5/month credit (enough for small projects)
-     - Copy connection string → Format: `mysql://user:password@host:3306/database`
+   - **Option A: Render (FREE Tier Available)**
+     - Sign up at https://render.com (free tier available)
+     - New → Database → MySQL
+     - Select "Free" plan (if available) or "Starter" plan
+     - Wait for provisioning
+     - Copy "Internal Database URL" → Format: `mysql://user:password@host:3306/database`
    
-   - **Option B: Render (FREE tier available)**
-     - Sign up at https://render.com
-     - New → PostgreSQL/MySQL → Choose MySQL
-     - Free tier available (with some limitations)
+   - **Option B: Aiven (FREE Tier)**
+     - Sign up at https://aiven.io
+     - Create MySQL service (free tier available)
      - Copy connection string
    
-   - **Option C: Free MySQL.com Cloud (if available)**
-     - Check https://www.mysql.com/cloud/ for free tier options
+   - **Option C: FreeMySQLHosting.net**
+     - Go to https://www.freemysqlhosting.net
+     - Free tier with 5MB storage (good for testing)
+     - Copy connection string
    
    - **Format:** `mysql://user:password@host:3306/database`
 
@@ -115,9 +117,10 @@ PLATFORM_FEE_BPS=1500
 **IMPORTANT:** Your `prisma/schema.prisma` is configured for MySQL. Make sure your production database is MySQL.
 
 **Recommended FREE Providers:**
-- **Railway** (https://railway.app) - $5/month free credit, easy MySQL setup
-- **Render** (https://render.com) - Free tier available for MySQL
-- **Note:** For production, you may need to upgrade later, but these free tiers work for getting started
+- **Render** (https://render.com) - Free tier available for MySQL (best option)
+- **Aiven** (https://aiven.io) - Free tier with 1GB storage
+- **FreeMySQLHosting.net** - Free tier with 5MB storage (good for testing)
+- **Note:** Free tiers have limitations but work for getting started. Upgrade later if needed.
 
 **Note:** You can keep SQLite for local development by using a different `.env` file locally, but the schema in the repo should be MySQL for Vercel.
 
@@ -192,24 +195,28 @@ Then point DNS to Vercel the same way.
 
 SQLite won't work on Vercel. Use one of these **FREE** MySQL options:
 
-### Option 1: Railway MySQL (FREE - $5 Monthly Credit)
-1. Go to https://railway.app
-2. Sign up (free with $5/month credit)
-3. Create new project → Add MySQL database
-4. Copy connection string from database settings
-5. Update `DATABASE_URL` in Vercel
-6. Run migrations after first deployment:
+1. Go to https://render.com
+2. Sign up (free tier available)
+3. New → Database → MySQL
+4. Name it (e.g., "nexora-db")
+5. Select "Free" plan (if available) or "Starter" plan
+6. Click "Create Database"
+7. Wait for provisioning (takes a few minutes)
+8. Copy "Internal Database URL" from database dashboard
+9. Update `DATABASE_URL` in Vercel environment variables
+10. Run migrations after first deployment:
    ```bash
    npx prisma db push
    ```
 
-### Option 2: Render MySQL (FREE Tier)
-1. Go to https://render.com
+### Option 2: Aiven MySQL (FREE Tier)
+1. Go to https://aiven.io
 2. Sign up (free tier available)
-3. New → Database → MySQL
-4. Create free MySQL database
-5. Copy connection string
-6. Update `DATABASE_URL` in Vercel
+3. Create new MySQL service
+4. Select free plan
+5. Wait for provisioning
+6. Copy connection string
+7. Update `DATABASE_URL` in Vercel
 
 **Note:** Free tiers have limitations but are perfect for getting started. Upgrade later if needed.
 
@@ -237,7 +244,7 @@ npx prisma generate
 **You DO need:**
 - ✅ Vercel account (free)
 - ✅ GitHub account (free)
-- ✅ Production database (Railway/Render MySQL - FREE tiers available)
+- ✅ Production database (Render/Aiven MySQL - FREE tiers available)
 - ✅ Domain (optional - Vercel provides free subdomain)
 
 **Quick Start:**

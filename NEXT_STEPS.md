@@ -12,17 +12,7 @@ Follow these steps in order:
 
 Choose ONE option:
 
-### Option A: Railway (Recommended)
-1. Go to https://railway.app
-2. Sign up with GitHub (free)
-3. Click "New Project"
-4. Click "Add Service" → Select "Database" → Choose "MySQL"
-5. Wait for database to provision
-6. Click on the MySQL service
-7. Go to "Variables" tab
-8. Copy the `DATABASE_URL` value (looks like: `mysql://user:password@host:3306/database`)
-
-### Option B: Render
+### Option A: Render (FREE Tier Available)
 1. Go to https://render.com
 2. Sign up (free)
 3. Click "New" → "Database"
