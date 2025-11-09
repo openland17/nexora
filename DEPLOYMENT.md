@@ -98,6 +98,29 @@ PLATFORM_FEE_BPS=1500
 - Set all variables for **Production**, **Preview**, and **Development** environments
 - After setting variables, **redeploy** your project
 
+### Step 3.5: Update Prisma Schema for PostgreSQL
+
+**IMPORTANT:** Your `prisma/schema.prisma` is currently set to SQLite. For Vercel production, you need PostgreSQL.
+
+1. Open `prisma/schema.prisma`
+2. Change the first line from:
+   ```
+   datasource db {
+     provider = "sqlite"
+     url      = env("DATABASE_URL")
+   }
+   ```
+   To:
+   ```
+   datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
+   ```
+3. Commit and push this change
+
+**Note:** You can keep SQLite for local development by using a different `.env` file locally, but the schema in the repo should be PostgreSQL for Vercel.
+
 ### Step 4: Configure Webhooks
 
 After deployment, you'll get a URL like: `https://your-app.vercel.app`
