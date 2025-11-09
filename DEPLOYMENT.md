@@ -25,30 +25,78 @@
 
 ### Step 3: Add Environment Variables in Vercel
 
-In your Vercel project settings → Environment Variables, add:
+Go to your Vercel project → Settings → Environment Variables and add ALL of these:
+
+#### Required Environment Variables:
 
 ```
-DATABASE_URL=file:./dev.db
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
+# Database (REQUIRED - Use PostgreSQL for production, not SQLite!)
+DATABASE_URL=postgresql://user:password@host:5432/database?sslmode=require
+
+# Clerk Authentication (REQUIRED)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_... or pk_live_...
+CLERK_SECRET_KEY=sk_test_... or sk_live_...
 CLERK_WEBHOOK_SECRET=whsec_...
-STRIPE_SECRET_KEY=sk_test_...
+
+# Stripe Payments (REQUIRED)
+STRIPE_SECRET_KEY=sk_test_... or sk_live_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_... or pk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-MUX_TOKEN_ID=...
-MUX_TOKEN_SECRET=...
-RESEND_API_KEY=re_...
+
+# Mux Video (REQUIRED)
+MUX_TOKEN_ID=your_mux_token_id
+MUX_TOKEN_SECRET=your_mux_token_secret
+
+# App URL (REQUIRED - Update after first deployment)
 NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
+
+# Email (Optional but recommended)
+RESEND_API_KEY=re_...
+
+# Platform Fee (Optional - defaults to 15%)
 PLATFORM_FEE_BPS=1500
 ```
 
-**Important:** For production, you'll need a real database (not SQLite file). Use:
-- Neon (PostgreSQL): https://neon.tech
-- Vercel Postgres
-- Supabase
-- Any PostgreSQL provider
+#### How to Get Each Value:
 
-Update `DATABASE_URL` to your production database connection string.
+1. **DATABASE_URL**: 
+   - Sign up at https://neon.tech (free tier available)
+   - Create a new project
+   - Copy the connection string
+   - Format: `postgresql://user:password@host/database?sslmode=require`
+
+2. **Clerk Keys**:
+   - Go to https://dashboard.clerk.com
+   - Create/select your application
+   - Copy `Publishable Key` → `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+   - Copy `Secret Key` → `CLERK_SECRET_KEY`
+   - Create webhook → Copy secret → `CLERK_WEBHOOK_SECRET`
+
+3. **Stripe Keys**:
+   - Go to https://dashboard.stripe.com
+   - Developers → API keys
+   - Copy `Publishable key` → `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+   - Copy `Secret key` → `STRIPE_SECRET_KEY`
+   - Webhooks → Add endpoint → Copy signing secret → `STRIPE_WEBHOOK_SECRET`
+
+4. **Mux Credentials**:
+   - Go to https://dashboard.mux.com
+   - Settings → API Access Tokens
+   - Create token → Copy `Token ID` and `Token Secret`
+
+5. **NEXT_PUBLIC_APP_URL**:
+   - After first deployment, Vercel gives you a URL
+   - Update this variable with your actual deployment URL
+   - Example: `https://nexora-abc123.vercel.app`
+
+6. **RESEND_API_KEY** (Optional):
+   - Go to https://resend.com
+   - Create API key → Copy to `RESEND_API_KEY`
+
+**Important Notes:**
+- Use **PostgreSQL** for production (SQLite won't work on Vercel)
+- Set all variables for **Production**, **Preview**, and **Development** environments
+- After setting variables, **redeploy** your project
 
 ### Step 4: Configure Webhooks
 
