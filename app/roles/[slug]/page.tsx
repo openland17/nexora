@@ -30,12 +30,12 @@ export async function generateStaticParams() {
   return roles.map((slug) => ({ slug }))
 }
 
-export default function RolePage({ params }: { params: { slug: string } }) {
-  if (!roles.includes(params.slug)) {
+export default async function RolePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  if (!roles.includes(slug)) {
     notFound()
   }
-
-  const roleName = params.slug
+  const roleName = slug
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ")
