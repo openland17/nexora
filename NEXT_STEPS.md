@@ -2,6 +2,12 @@
 
 Follow these steps in order:
 
+## Step 0: Fix Package Lock File (Already Done!)
+
+✅ The `package-lock.json` has been updated and committed. This ensures Railway and Vercel can build correctly.
+
+---
+
 ## Step 1: Set Up Free MySQL Database (5 minutes)
 
 Choose ONE option:
